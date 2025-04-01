@@ -1,0 +1,10 @@
+[package]
+name = "piscine-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[[bin]]
+name = "piscine-rust"
+path = "main.rs"
