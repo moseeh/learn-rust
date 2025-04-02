@@ -3,10 +3,17 @@ pub fn initials(names: Vec<&str>) -> Vec<String> {
     
     for name in names {
         let mut initials_string = String::new();
+        let words: Vec<&str> = name.split_whitespace().collect();
         
-        for word in name.split_whitespace() {
+        for (i, word) in words.iter().enumerate() {
             if let Some(initial) = word.chars().next() {
                 initials_string.push(initial);
+                initials_string.push('.');
+                
+                // Add space if this isn't the last word
+                if i < words.len() - 1 {
+                    initials_string.push(' ');
+                }
             }
         }
         
