@@ -11,7 +11,8 @@ fn main() {
         io::stdin()
             .read_line(&mut guess)
             .expect("failed to read the line");
-        if guess == answer {
+        let trimmed_guess = guess.trim();
+        if trimmed_guess == answer {
             println!("Number of trials: {}", i);
             break;
         } else {
