@@ -1,7 +1,7 @@
 use std::io;
 
 fn main() {
-    let mut i = 0;
+    let mut i = 1;
     let answer = "The letter e";
     let mut guess = String::new();
     loop {
