@@ -1,7 +1,7 @@
 pub fn factorial(num: u64) -> u64 {
     match num {
         0 | 1 => 1,
-    }
+    };
     let mut n = 1;
     loop {
         if num == 1 {
