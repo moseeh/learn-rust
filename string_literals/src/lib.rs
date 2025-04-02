@@ -16,7 +16,7 @@ pub fn contains(v: &str, pat: &str) -> bool {
     }
     
     for i in 0..=v.len() - pat.len() {
-        if v[i..i + pat.len()] == pat {
+        if &v[i..i + pat.len()] == pat {
             return true;
         }
     }
