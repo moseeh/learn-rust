@@ -13,9 +13,10 @@ fn main() {
             .expect("failed to read the line");
         if guess == answer {
             println!("Number of trials: {}", i);
-            break
+            break;
         } else {
-          i= i +1;
+            guess.clear();
+            i = i + 1;
         }
     }
 }
