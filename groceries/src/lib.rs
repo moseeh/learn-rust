@@ -3,7 +3,7 @@ pub fn insert(vec: &mut Vec<String>, val: String) {
 }
 
 pub fn at_index(slice: &[String], index: usize) -> &str {
-    vec[index]
+    slice[index]
 }
 
 #[cfg(test)]
