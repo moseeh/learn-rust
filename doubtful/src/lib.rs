@@ -1,5 +1,5 @@
-pub fn doubtful(s: &str ) {
-    
+pub fn doubtful(s: &mut String) {
+    s.push('?');
 }
 
 #[cfg(test)]
