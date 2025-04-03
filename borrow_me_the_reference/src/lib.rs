@@ -1,66 +1,42 @@
 pub fn delete_and_backspace(s: &mut String) {
-    // Special case handling for the test input
-    if s == "borskrolcw" {
-        *s = String::from("borrow");
-        return;
-    }
-    
-    // Standard processing for other cases
+    let chars: Vec<char> = s.chars().collect();
     let mut result = String::new();
-    let mut chars = s.chars().peekable();
-    
-    while let Some(c) = chars.next() {
-        match c {
+    let mut i = 0;
+    while i < chars.len() {
+        match chars[i] {
             '-' => {
-                // Backspace - remove last character
                 result.pop();
+                i += 1;
             },
             '+' => {
-                // Delete - skip next character
-                chars.next(); // Skip next character
+                let mut count = 0;
+                while i < chars.len() && chars[i] == '+' {
+                    count += 1;
+                    i += 1;
+                }
+                i += count;
             },
-            _ => {
+            c => {
                 result.push(c);
+                i += 1;
             }
         }
     }
-    
     *s = result;
 }
 
 pub fn do_operations(v: &mut [String]) {
-    for item in v.iter_mut() {
-        // Find the operation character (+ or -)
-        let operation = if item.contains('+') { '+' } else if item.contains('-') { '-' } else { continue };
-        
-        // Split the string at the operation character
-        let parts: Vec<&str> = item.split(operation).collect();
-        if parts.len() != 2 {
-            continue; // Skip if we don't have exactly two parts
-        }
-        
-        // Parse the numbers
-        if let (Ok(num1), Ok(num2)) = (parts[0].parse::<i32>(), parts[1].parse::<i32>()) {
-            // Perform the operation
-            let result = match operation {
-                '+' => num1 + num2,
-                '-' => num1 - num2,
-                _ => unreachable!(),
-            };
+    for s in v.iter_mut() {
+        if let Some(op_pos) = s.find(|c: char| c == '+' || c == '-') {
+            let (left, right) = s.split_at(op_pos);
+            let x = left.trim().parse::<i32>().unwrap_or(0);
+            let y = right[1..].trim().parse::<i32>().unwrap_or(0);
             
-            // Replace the string with the result
-            *item = result.to_string();
+            *s = match s.chars().nth(op_pos) {
+                Some('+') => (x + y).to_string(),
+                Some('-') => (x - y).to_string(),
+                _ => s.clone(),
+            };
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
     }
 }
