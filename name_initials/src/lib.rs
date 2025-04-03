@@ -16,7 +16,6 @@ pub fn initials(names: Vec<&str>) -> Vec<String> {
                 }
             }
         }
-        
         result.push(initials_string);
     }
     
