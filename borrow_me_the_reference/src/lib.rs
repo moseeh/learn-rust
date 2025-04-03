@@ -1,28 +1,30 @@
 pub fn delete_and_backspace(s: &mut String) {
     let mut result = String::new();
-    let mut i = 0;
     let chars: Vec<char> = s.chars().collect();
+    let mut skip_next = false;
     
-    while i < chars.len() {
-        match chars[i] {
-            // Backspace: remove the previous character if exists
-            '-' => {
-                if !result.is_empty() {
-                    result.pop();
-                }
-            },
-            // Delete: skip the next character if exists
-            '+' => {
-                // Skip the next character (increment counter)
-                i += 1;
-            },
-            // Regular character: add to result
-            c => result.push(c),
+    for (i, &c) in chars.iter().enumerate() {
+        if skip_next {
+            skip_next = false;
+            continue;
         }
-        i += 1;
+        
+        match c {
+            '-' => {
+                // Backspace: remove the last character if possible
+                result.pop();
+            },
+            '+' => {
+                // Delete: skip the next character
+                skip_next = true;
+            },
+            _ => {
+                // Regular character
+                result.push(c);
+            }
+        }
     }
     
-    // Replace the content of the original string with our processed result
     *s = result;
 }
 
