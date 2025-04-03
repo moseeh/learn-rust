@@ -1,28 +1,29 @@
 pub fn arrange_phrase(phrase: &str) -> String {
-    // Split the phrase into words
-    let mut words: Vec<&str> = phrase.split_whitespace().collect();
-    
-    // Sort the words based on the numbers they contain
-    words.sort_by_key(|word| {
-        // Find the first digit in the word
-        for (i, c) in word.chars().enumerate() {
-            if c.is_digit(10) {
-                return word[i..].parse::<u32>().unwrap_or(0);
+    // Parse each word to extract position and clean word
+    let mut words: Vec<(String, usize)> = phrase
+        .split_whitespace()
+        .map(|word| {
+            let mut position = 0;
+            let mut clean_word = String::new();
+            
+            for c in word.chars() {
+                if c.is_digit(10) {
+                    position = position * 10 + c.to_digit(10).unwrap() as usize;
+                } else {
+                    clean_word.push(c);
+                }
             }
-        }
-        0 // Default if no number is found
-    });
+            
+            (clean_word, position)
+        })
+        .collect();
     
-    // Join the sorted words back into a string
-    words.join(" ")
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+    // Sort words by their position
+    words.sort_by_key(|(_, pos)| *pos);
+    
+    // Join sorted words
+    words.into_iter()
+        .map(|(word, _)| word)
+        .collect::<Vec<String>>()
+        .join(" ")
 }
