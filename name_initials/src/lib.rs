@@ -9,8 +9,7 @@ pub fn initials(names: Vec<&str>) -> Vec<String> {
             if let Some(initial) = word.chars().next() {
                 initials_string.push(initial);
                 initials_string.push('.');
-                
-                // Add space if this isn't the last word
+
                 if i < words.len() - 1 {
                     initials_string.push(' ');
                 }
