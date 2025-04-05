@@ -25,7 +25,7 @@ impl Circle {
         self.radius * 2.0
     }
     pub fn area(self) -> f64 {
-        3.142 * self.radius * self.radius
+        std::f64::consts::PI * self.radius * self.radius
     }
     pub fn intersect(self, other:Circle) ->  bool{
         let distance = self.center.distance(other.center);
