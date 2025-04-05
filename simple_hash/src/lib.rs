@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub fn word_frequency_counter(words: Vec<&str>) -> HashMap<&str, usize> {
     let map = HashMap::new();
     for word in words {
