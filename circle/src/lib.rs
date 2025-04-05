@@ -1,8 +1,5 @@
 #[derive(Debug, Clone, Copy)]
-pub struct Point {
-    pub x: f64,
-    pub y: f64,
-}
+pub struct Point(pub f64, pub f64);
 #[derive(Debug, Clone, Copy)]
 pub struct Circle {
     pub center: Point,
@@ -11,8 +8,8 @@ pub struct Circle {
 
 impl Point {
     pub fn distance(self, other: Point) -> f64 {
-        let x2 = (self.x -other.x) * (self.x - other.x);
-        let y2 = (self.y -other.y) * (self.y - other.y);
+        let x2 = (self.0 -other.0) * (self.0 - other.0);
+        let y2 = (self.1 -other.1) * (self.1 - other.1);
         (x2+y2).sqrt()
     }
 }
@@ -20,10 +17,7 @@ impl Point {
 impl Circle {
     pub fn new(x: f64, y: f64, radius: f64) -> Self{
         Circle {
-            center: Point {
-                x: x,
-                y:y,
-            },
+            center: Point(x,y),
             radius,
         }
     }
