@@ -8,7 +8,7 @@ pub struct Light {
 impl Light {
     pub fn new(alias: &str) -> Self {
         Self{
-            alias: alias,
+            alias: alias.to_string(),
             brightness: 0,
         }
     }
