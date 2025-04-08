@@ -19,7 +19,7 @@ pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> Strin
         Security:: NotFound => {
             match server {
                 Ok(url) => url.to_string(),
-                Err(message) => format!("Not found: {}", msg),
+                Err(message) => format!("Not found: {}", message),
             }
         },
         Security:: UnexpectedUrl =>  {
