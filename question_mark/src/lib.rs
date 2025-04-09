@@ -14,6 +14,6 @@ struct Four {
 
 impl One {
     pub fn get_fourth_layer(self) -> Option<u16> {
-        Some(self.first_layer?.second_layer?.third_layer?.fourth_layer)
+        Some(self.first_layer?.second_layer?.third_layer?.fourth_layer?)
     }
 }
