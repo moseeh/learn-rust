@@ -1,14 +1,14 @@
-struct One {
+pub struct One {
     first_layer: Option<Two>
 }
-struct Two {
+pub struct Two {
     second_layer: Option<Three>
 }
-struct Three {
+pub struct Three {
     third_layer: Option<Four>
 }
 
-struct Four {
+pub struct Four {
     fourth_layer: Option<u16>
 }
 
