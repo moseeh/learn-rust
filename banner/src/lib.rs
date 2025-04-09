@@ -1,13 +1,13 @@
 use std::{collections::HashMap, num::ParseFloatError};
 
-pub struct Flag<'a> {
+pub struct Flag {
     pub short_hand: String,
     pub long_hand: String,
     pub desc: String,
 }
 
-impl<'a> Flag<'a> {
-    pub fn opt_flag(name: &'a str, d: &'a str) -> Self {
+impl Flag {
+    pub fn opt_flag(name: &str, d: &str) -> Self {
         Flag {
             short_hand: format!("-{}", &name[0..1]),
             long_hand: format!("--{}", name),
