@@ -1,15 +1,15 @@
 pub struct One {
-    first_layer: Option<Two>
+    first_layer: Option<Two>,
 }
 pub struct Two {
-    second_layer: Option<Three>
+    second_layer: Option<Three>,
 }
 pub struct Three {
-    third_layer: Option<Four>
+    third_layer: Option<Four>,
 }
 
 pub struct Four {
-    fourth_layer: Option<u16>
+    fourth_layer: Option<u16>,
 }
 
 impl One {
