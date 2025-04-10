@@ -1,59 +1,109 @@
+pub mod areas_volumes; // Import the module containing area and volume calculation functions
+pub use areas_volumes::*; // Re-export everything from the module for use in this file
+
+// Determines if a given number of 2D shapes can fit within a 2D container of size x * y
 pub fn area_fit(
     x: usize,
     y: usize,
-    objects: crate::areas_volumes::GeometricalShapes,
+    objects: GeometricalShapes,
     times: usize,
     a: usize,
     b: usize,
 ) -> bool {
-    // Calculate the total area of the rectangle
-    let total_area = x * y;
-    
-    // Calculate the area of a single object based on its type
-    let single_object_area = match objects {
-        crate::areas_volumes::GeometricalShapes::Square => crate::areas_volumes::square_area(a) as f64,
-        crate::areas_volumes::GeometricalShapes::Circle => crate::areas_volumes::circle_area(a),
-        crate::areas_volumes::GeometricalShapes::Rectangle => crate::areas_volumes::rectangle_area(a, b) as f64,
-        crate::areas_volumes::GeometricalShapes::Triangle => crate::areas_volumes::triangle_area(a, b),
-    };
-    
-    // Calculate the total area needed for all objects
-    let needed_area = single_object_area * times as f64;
-    
-    // Check if the objects can fit
-    needed_area <= total_area as f64
+    let max_size = x * y; // Calculate total available area
+    let size;
+    match objects {
+        GeometricalShapes::Square => size = square_area(a) as f64, // Area of square with side a
+        GeometricalShapes::Circle => size = circle_area(a), // Area of circle with radius a
+        GeometricalShapes::Rectangle => size = rectangle_area(a, b) as f64, // Area of rectangle a × b
+        GeometricalShapes::Triangle => size = triangle_area(a, b), // Area of triangle with base a and height b
+    }
+    times as f64 * size <= max_size as f64 // Check if total area of all shapes fits within container
 }
 
+// Determines if a given number of 3D volumes can fit within a 3D container of size x * y * z
 pub fn volume_fit(
     x: usize,
     y: usize,
     z: usize,
-    objects: crate::areas_volumes::GeometricalVolumes,
+    objects: GeometricalVolumes,
     times: usize,
     a: usize,
     b: usize,
     c: usize,
 ) -> bool {
-    // Calculate the total volume of the box
-    let total_volume = x * y * z;
-    
-    // Calculate the volume of a single object based on its type
-    let single_object_volume = match objects {
-        crate::areas_volumes::GeometricalVolumes::Cube => crate::areas_volumes::cube_volume(a) as f64,
-        crate::areas_volumes::GeometricalVolumes::Sphere => crate::areas_volumes::sphere_volume(a),
-        crate::areas_volumes::GeometricalVolumes::Cone => crate::areas_volumes::cone_volume(a, b),
-        crate::areas_volumes::GeometricalVolumes::Pyramid => {
-            // For Pyramid, 'a' is base_area and 'b' is height
-            // We need to calculate the base area as a triangle
-            let base_area = a as f64; // a is already the base_area according to instructions
-            crate::areas_volumes::triangular_pyramid_volume(base_area, b)
-        },
-        crate::areas_volumes::GeometricalVolumes::Parallelepiped => crate::areas_volumes::parallelepiped_volume(a, b, c) as f64,
-    };
-    
-    // Calculate the total volume needed for all objects
-    let needed_volume = single_object_volume * times as f64;
-    
-    // Check if the objects can fit
-    needed_volume <= total_volume as f64
+    let max_size = x * y * z; // Calculate total available volume
+    let size;
+    match objects {
+        GeometricalVolumes::Cube => size = cube_volume(a) as f64, // Volume of cube with side a
+        GeometricalVolumes::Sphere => size = sphere_volume(a), // Volume of sphere with radius a
+        GeometricalVolumes::Parallelepiped => size = parallelepiped_volume(a, b, c) as f64, // Volume of parallelepiped
+        GeometricalVolumes::Pyramid => size = triangular_pyramid_volume(triangle_area(a, b), c), // Volume of triangular pyramid
+        GeometricalVolumes::Cone => size = cone_volume(a, b), // Volume of cone with radius a and height b
+    }
+    times as f64 * size <= max_size as f64 // Check if total volume of all objects fits within container
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn no_volumes_shapes() {
+        // Test cases with zero objects to fit — should always return true
+        assert_eq!(true, area_fit(2, 5, GeometricalShapes::Circle, 0, 2, 1));
+        assert_eq!(true, area_fit(2, 2, GeometricalShapes::Rectangle, 0, 6, 10));
+        assert_eq!(
+            true,
+            volume_fit(2, 5, 3, GeometricalVolumes::Cone, 0, 1, 1, 1)
+        );
+        assert_eq!(
+            true,
+            volume_fit(3, 5, 7, GeometricalVolumes::Parallelepiped, 0, 2, 6, 3)
+        );
+    }
+
+    #[test]
+    fn equal_size() {
+        // Test cases where object size exactly matches container size
+        assert_eq!(true, area_fit(2, 5, GeometricalShapes::Square, 1, 2, 5));
+        assert_eq!(
+            true,
+            volume_fit(3, 1, 4, GeometricalVolumes::Cube, 1, 1, 3, 4)
+        );
+    }
+
+    #[test]
+    fn all_shapes() {
+        // Test various shapes with different counts and dimensions
+        assert_eq!(false, area_fit(3, 5, GeometricalShapes::Circle, 2, 2, 0));
+        assert_eq!(true, area_fit(8, 6, GeometricalShapes::Triangle, 5, 5, 2));
+        assert_eq!(true, area_fit(7, 3, GeometricalShapes::Rectangle, 2, 2, 4));
+        assert_eq!(true, area_fit(5, 5, GeometricalShapes::Square, 1, 2, 4));
+    }
+
+    #[test]
+    fn all_volumes() {
+        // Test various volumes with different counts and dimensions
+        assert_eq!(
+            true,
+            volume_fit(5, 6, 3, GeometricalVolumes::Cube, 2, 3, 3, 4)
+        );
+        assert_eq!(
+            false,
+            volume_fit(7, 4, 4, GeometricalVolumes::Cone, 1, 8, 2, 0)
+        );
+        assert_eq!(
+            true,
+            volume_fit(2, 5, 3, GeometricalVolumes::Sphere, 1, 1, 1, 1)
+        );
+        assert_eq!(
+            false,
+            volume_fit(2, 5, 3, GeometricalVolumes::Parallelepiped, 31, 1, 1, 1)
+        );
+        assert_eq!(
+            true,
+            volume_fit(7, 5, 3, GeometricalVolumes::Pyramid, 3, 3, 2, 1)
+        );
+    }
 }
