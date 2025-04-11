@@ -1,6 +1,6 @@
 pub fn number_logic(num: u32) -> bool {
     if num == 0 {
-        return false;
+        return true;
     }
     let mut digit_count = 0;
     let mut temp = num;
