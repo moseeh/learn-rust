@@ -30,7 +30,7 @@ fn create_row(letter_byte: u8, center: char) -> String {
     
     if letter != 'A' {
         let inner_spaces = 2 * ((letter as u8) - ('A' as u8)) - 1;
-        row.push_str(&" ".repeat(inner_spaces + 2));
+        row.push_str(&" ".repeat((inner_spaces + 2) as usize));
         row.push(letter);
     }
     
