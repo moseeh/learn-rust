@@ -1,4 +1,4 @@
-fn scytale_cipher(message: String, i: u32) -> String {
+pub fn scytale_cipher(message: String, i: u32) -> String {
     // Check for empty message
     if message.is_empty() {
         return String::new();
