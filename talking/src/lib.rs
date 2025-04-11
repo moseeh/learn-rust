@@ -3,7 +3,7 @@ pub fn talking(text: &str) -> &str {
     if trimmed == "" {
         return "Just say something!"
     }
-    if trimmed.trim_end().ends_with('?') {
+    if trimmed.ends_with('?') {
         if is_all_uppercase(trimmed) {
             return "Quiet, I am thinking!";
         }
