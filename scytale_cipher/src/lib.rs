@@ -1,23 +1,31 @@
 fn scytale_cipher(message: String, i: u32) -> String {
-    let i = i as usize;
-    let len = message.len();
-    let chars: Vec<char> = message.chars().collect();
-    
-    // Calculate the number of columns required
-    let cols = (len + i - 1) / i; // ceiling division to get enough columns
-
-    // Pad message if necessary
-    let padded_len = i * cols;
-    let mut padded_chars = chars.clone();
-    padded_chars.resize(padded_len, ' '); // fill with spaces
-
-    // Build the ciphered string by reading column-wise
-    let mut result = String::with_capacity(padded_len);
-    for col in 0..cols {
-        for row in 0..i {
-            result.push(padded_chars[row * cols + col]);
-        }
+    // Check for empty message
+    if message.is_empty() {
+        return String::new();
     }
 
+    // Convert i to usize for safe indexing
+    let cols = i as usize;
+    
+    // Calculate rows
+    let message_len = message.len();
+    let rows = (message_len + cols - 1) / cols; // Ceiling division
+    
+    // Create a buffer for the result
+    let mut result = String::with_capacity(message_len);
+    
+    // Convert message to a vector of chars for easier access
+    let chars: Vec<char> = message.chars().collect();
+    
+    // Read column by column
+    for col in 0..cols {
+        for row in 0..rows {
+            let index = row * cols + col;
+            if index < message_len {
+                result.push(chars[index]);
+            }
+        }
+    }
+    
     result
 }
