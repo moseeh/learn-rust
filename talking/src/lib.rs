@@ -1,14 +1,15 @@
 pub fn talking(text: &str) -> &str {
-    if text == "" {
+    let trimmed = text.trim();
+    if trimmed == "" {
         return "Just say something!"
     }
-    if text.trim_end().ends_with('?') {
-        if is_all_uppercase(text) {
+    if trimmed.trim_end().ends_with('?') {
+        if is_all_uppercase(trimmed) {
             return "Quiet, I am thinking!";
         }
         return "Sure."
     } else {
-        if is_all_uppercase(text) {
+        if is_all_uppercase(trimmed) {
             return "There is no need to yell, calm down!"
         }
     }
