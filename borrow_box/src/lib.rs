@@ -8,23 +8,23 @@ pub struct GameSession {
 
 impl GameSession {
     pub fn new(id: u32, p1_name: String, p2_name: String, nb_games: u16) -> Box<GameSession> {
-        Box::new(self {
+        Box::new(Self {
             id,
-            p1_name, 0,
-            p2_name, 0,
+            p1: (p1_name, 0),
+            p2: (p2_name, 0),
             nb_games,
         })
     }
     pub fn read_winner(&self) -> (String, u16) {
         if self.p1.1 == self.p2.1 {
-            return ("Same score! tied", self.p1(1));
+            return ("Same score! tied".to_string(), self.p1.1);
         } else if self.p1.1 > self.p2.1 {
-            return self.p1;
+            return self.p1.clone();
         }
-        return self.p2;
+        return self.p2.clone();
     }
     pub fn update_score(&mut self, user_name: String) {
-        let win = nb_games/2 +1 ;
+        let win = self.nb_games/2 +1 ;
         if self.p1.1 != win && self.p2.1 != win {
 
             if self.p1.0 == user_name {
