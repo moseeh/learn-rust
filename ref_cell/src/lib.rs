@@ -1,9 +1,9 @@
 pub mod messenger;
 
-use messenger::Logger;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::rc::Rc;
+pub use messenger::Logger;
+pub use std::cell::RefCell;
+pub use std::collections::HashMap;
+pub use std::rc::Rc;
 
 /// The Worker structure acts as a logger using interior mutability.
 /// It stores a tracked value (an Rc<String>), a HashMap of the latest messages
