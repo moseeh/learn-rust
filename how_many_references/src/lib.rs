@@ -1,4 +1,4 @@
-use std::rc::Rc;
+pub use std::rc::Rc;
 
 pub struct Node {
     pub ref_list: Vec<Rc<String>>,
