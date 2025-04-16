@@ -1,4 +1,4 @@
-use std::rc::Rc;
+pub use std::rc::Rc;
 
 /// A logging trait that supports three different levels.
 pub trait Logger {
