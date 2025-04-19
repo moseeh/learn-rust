@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Sub, Div};
 
 /// Trait for scalar types supporting basic arithmetic and identity elements.
 pub trait Scalar:
