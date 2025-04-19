@@ -47,7 +47,10 @@ impl<T> List<T> {
 
         while let Some(node) = current {
             count += 1;
-            current = &node.next.as_deref();
+            current = match &node.next {
+                Some(boxed_node) => &Some(**boxed_node),
+                None => &None,
+            };
         }
 
         count
