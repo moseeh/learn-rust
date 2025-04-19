@@ -1,6 +1,8 @@
 use std::fmt;
 use std::fmt::Display;
 
+
+#[derive(Debug)]
 pub struct Player {
     pub name: String,
     pub strength: f64,
