@@ -53,6 +53,6 @@ impl Display for Player {
             "Strength: {}, Score: {}, Money: {}",
             self.strength, self.score, self.money
         )?;
-        writeln!(f, "Weapons: {:?}", self.weapons)
+        write!(f, "Weapons: {:?}", self.weapons)
     }
 }
