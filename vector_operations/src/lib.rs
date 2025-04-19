@@ -1,5 +1,6 @@
 use std::ops::{Add, Sub};
 
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct ThreeDVector<T> {
     pub i: T,
     pub j: T,
