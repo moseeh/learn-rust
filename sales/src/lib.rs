@@ -30,15 +30,9 @@ impl Cart {
 
     /// Inserts an item from the store into the cart by product name.
     pub fn insert_item(&mut self, store: &Store, ele: String) {
-        if let Some(&(_, price)) = store
-            .products
-            .iter()
-            .find(|(name, _)| name == &ele)
-            .map(|&(ref n, p)| (n, p))
-        {
-            self.items.push((ele, price));
+        if let Some((_, price)) = store.products.iter().find(|(name, _)| name == &ele) {
+            self.items.push((ele, *price));
         } else {
-            // If product not found, silently ignore or handle as needed
             panic!("Product '{}' not found in store", ele);
         }
     }
@@ -53,15 +47,17 @@ impl Cart {
 
         // Calculate how many free items
         let free_count = n / 3;
-        let mut receipt: Vec<f32> = Vec::new();
 
+        // Compute receipt prices
+        let mut receipt: Vec<f32>;
         if free_count > 0 {
             // Sum of all prices
             let total: f32 = prices.iter().sum();
             // Sum of the cheapest `free_count` prices
-            let mut sorted = prices.clone();
-            sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
-            let free_sum: f32 = sorted.iter().take(free_count).sum();
+            let mut sorted_prices = prices.clone();
+            sorted_prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            let free_sum: f32 = sorted_prices.iter().take(free_count).sum();
+
             // Discount rate to apply to all items
             let discount_rate = free_sum / total;
 
@@ -81,7 +77,7 @@ impl Cart {
                 .collect();
         }
 
-        // Sort the receipt and store it
+        // Sort the receipt, save, and return
         receipt.sort_by(|a, b| a.partial_cmp(b).unwrap());
         self.receipt = receipt.clone();
         receipt
