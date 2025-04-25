@@ -21,7 +21,7 @@ impl Cart {
         }
     }
     pub fn insert_item(&mut self, s: &Store, ele: String) {
-        if let Some(product) = s.products.iter().find(|name, _| name == &ele) {
+        if let Some(product) = s.products.iter().map(|name, _| name == &ele) {
             self.items.push((product.0.clone(), product.1));
         }
     }
