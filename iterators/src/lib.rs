@@ -11,24 +11,25 @@ impl Collatz {
 }
 
 impl Iterator for Collatz {
-    type Item = u64;
+    type Item = Collatz;
 
-    /// Each call to `next` returns the *current* value in the sequence,
-    /// then advances `v` one step along the Collatz rules.
-    /// Once we hit 0, we stop.
     fn next(&mut self) -> Option<Self::Item> {
         if self.v == 0 {
-            // termination
             None
         } else {
             let current = self.v;
-            // advance to the next value
-            self.v = match current {
-                1 => 0, // when we hit 1, next time we’ll terminate
-                even if even % 2 == 0 => even / 2,
-                odd => 3 * odd + 1,
+            // compute where to go next:
+            let next_v = if current == 1 {
+                0
+            } else if current % 2 == 0 {
+                current / 2
+            } else {
+                3 * current + 1
             };
-            Some(current)
+            // advance internal state
+            self.v = next_v;
+            // yield a fresh Collatz item holding the *old* value
+            Some(Collatz { v: current })
         }
     }
 }
