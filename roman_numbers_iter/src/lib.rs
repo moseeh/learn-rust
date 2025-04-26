@@ -1,6 +1,9 @@
 // roman_numbers_iter/src/lib.rs
 
-use roman_numbers::{RomanDigit, RomanNumber as BaseRomanNumber};
+// Re-export RomanDigit so it’s available publicly
+pub use roman_numbers::RomanDigit;
+
+use roman_numbers::RomanNumber as BaseRomanNumber;
 
 /// A newtype wrapper around the Base RomanNumber to support Iterator
 #[derive(Clone, Debug, PartialEq, Eq)]
