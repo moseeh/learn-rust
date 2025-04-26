@@ -34,11 +34,8 @@ impl Iterator for Collatz {
     }
 }
 
-/// Return the number of steps required for n to reach 1
-/// under the Collatz rules. 0 and 1 both return 0 steps.
 pub fn collatz(n: u64) -> usize {
     Collatz::new(n)
-        // take all terms *before* the first 1
-        .take_while(|&x| x != 1)
+        .take_while(|c| c.v != 1) // compare the v field
         .count()
 }
