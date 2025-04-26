@@ -1,8 +1,7 @@
 // roman_numbers_iter/src/lib.rs
 
-// Re-export RomanDigit so it’s available publicly
+// Re-export RomanDigit so it's available publicly
 pub use roman_numbers::RomanDigit;
-
 use roman_numbers::RomanNumber as BaseRomanNumber;
 
 /// A newtype wrapper around the Base RomanNumber to support Iterator
@@ -33,25 +32,32 @@ impl Iterator for RomanNumber {
             }
         }
 
-        // Extract the inner digits vector
+        // Extract the digits vector
         let digits = &self.0.0;
-        // Compute the integer value, accounting for subtractive notation
-        let mut value = 0;
-        for i in 0..digits.len() {
-            let v = digit_value(&digits[i]);
-            if i + 1 < digits.len() && digit_value(&digits[i + 1]) > v {
-                value -= v;
-            } else {
-                value += v;
+        // Decode to integer with subtractive rules
+        let mut value: i32 = 0;
+        let mut i = 0;
+        while i < digits.len() {
+            let v = digit_value(&digits[i]) as i32;
+            if i + 1 < digits.len() {
+                let next_v = digit_value(&digits[i + 1]) as i32;
+                if next_v > v {
+                    value += next_v - v;
+                    i += 2;
+                    continue;
+                }
             }
+            value += v;
+            i += 1;
         }
+        // Convert to u32 and increment
+        let next_value = (value as u32).wrapping_add(1);
 
-        // Increment and build the next RomanNumber
-        let next_value = value + 1;
+        // Build the next RomanNumber
         let next_base = BaseRomanNumber::from(next_value);
         let next = RomanNumber(next_base.clone());
 
-        // Update self and return the new value
+        // Update self and return
         *self = next.clone();
         Some(next)
     }
