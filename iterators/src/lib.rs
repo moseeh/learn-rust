@@ -4,9 +4,16 @@ pub struct Collatz {
 }
 
 impl Collatz {
-    /// Start a new Collatz sequence at n
+    /// Create a new Collatz sequence starting from `n`.
     pub fn new(n: u64) -> Self {
         Collatz { v: n }
+    }
+
+    /// Inherent `.count()` that returns _steps_ to reach 1
+    /// (i.e. number of terms _before_ the 1).
+    pub fn count(self) -> usize {
+        // take all values before the first 1, and count them
+        self.take_while(|c| c.v != 1).count()
     }
 }
 
@@ -18,24 +25,17 @@ impl Iterator for Collatz {
             None
         } else {
             let current = self.v;
-            // compute where to go next:
-            let next_v = if current == 1 {
-                0
-            } else if current % 2 == 0 {
-                current / 2
-            } else {
-                3 * current + 1
+            self.v = match current {
+                1 => 0, // once we yield 1, end next time
+                even if even % 2 == 0 => even / 2,
+                odd => 3 * odd + 1,
             };
-            // advance internal state
-            self.v = next_v;
-            // yield a fresh Collatz item holding the *old* value
             Some(Collatz { v: current })
         }
     }
 }
 
+/// Free function that also returns the number of steps to 1.
 pub fn collatz(n: u64) -> usize {
-    Collatz::new(n)
-        .take_while(|c| c.v != 1) // compare the v field
-        .count()
+    Collatz::new(n).count()
 }
