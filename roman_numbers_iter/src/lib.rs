@@ -7,20 +7,19 @@ impl Iterator for RomanNumber {
     type Item = RomanNumber;
 
     fn next(&mut self) -> Option<Self::Item> {
-        // Convert the current RomanNumber into its integer value.
-        // This requires that RomanNumber implements `Into<u32>` or `TryInto<u32>`.
+        // Clone and convert current RomanNumber into its integer value
         let current_value: u32 = (*self).clone().into();
 
-        // Compute the next integer value
+        // Increment the integer value
         let next_value = current_value + 1;
 
-        // Create a new RomanNumber from the next integer
+        // Create a new RomanNumber from the incremented value
         let next_roman = RomanNumber::from(next_value);
 
-        // Update self to point to the new value
+        // Update self to the new value
         *self = next_roman.clone();
 
-        // Always return Some for unbounded iteration
+        // Return the updated RomanNumber
         Some(next_roman)
     }
 }
